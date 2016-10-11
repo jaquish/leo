@@ -1,5 +1,7 @@
 //: Playground - noun: a place where people can play
 
+import AppKit
+
 var str = "Hello, playground"
 
 func accept(_ i: Int) -> Bool {
@@ -7,13 +9,25 @@ func accept(_ i: Int) -> Bool {
 }
 
 func euler1() -> Int {
-    return (0..<100).reduce(0) { (runningTotal, i) in
+    let width = 100
+    let height = 100
+    let context = createARGBBitmapContext(pixelsWide: width, pixelsHigh: height)
+
+    let answer = (0..<10000).reduce(0) { (runningTotal, i) in
+        let y = i % width
+        let x = i / width
         if i % 3 == 0 || i % 5 == 0 {
+            setColorOfPixel(context: context, x: x, y: y, red: 0, green: 255, blue: 0)
             return runningTotal + i
         } else {
+            setColorOfPixel(context: context, x: x, y: y, red: 255, green: 0, blue: 0)
             return runningTotal
         }
     }
+    
+    let cgImage = context.makeImage()!
+    let image = NSImage(cgImage: cgImage, size: NSSize(width: width, height: height))
+    return answer
 }
 
 func euler2() -> Int {
@@ -40,5 +54,7 @@ func euler2() -> Int {
     }
 }
 
-print("Problem 1: \(euler1())")
-print("Problem 2: \(euler2())")
+euler1()
+euler2()
+
+
